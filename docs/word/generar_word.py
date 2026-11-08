@@ -1,6 +1,7 @@
 """Genera versiones .docx editables (para Google Drive / Word) de los documentos del proyecto.
 
-Uso (desde la raíz del repo):  python docs/word/generar_word.py
+Uso (desde la raíz del repo):  python docs/word/generar_word.py [nombre ...]
+  (sin nombres convierte los cuatro; p. ej. `avance_sesion2` convierte solo ese)
 Requiere: la herramienta make-pdf (convierte Markdown → .docx; ruta en MAKE_PDF) y lxml.
 
 Después de convertir, ajusta cada .docx:
@@ -15,6 +16,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import zipfile
 
@@ -227,7 +229,10 @@ def ajustar_docx(ruta_docx, markdown=""):
 
 
 def main():
+    elegidos = set(sys.argv[1:])
     for md, docx in DOCUMENTOS:
+        if elegidos and md[:-3] not in elegidos:
+            continue
         salida = os.path.join(AQUI, docx)
         # Copia temporal (en docs/, para que las rutas de las imágenes sigan valiendo) sin negritas
         # ni código dentro de las tablas: la conversión los parte en párrafos sueltos por celda.
