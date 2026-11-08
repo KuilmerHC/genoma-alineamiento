@@ -7,6 +7,7 @@ Integrantes: Kuilmer Santiago Hernández Cruz (C3, C6), Juan José Berrio Españ
 Documentos (versiones PDF para entregar en [docs/pdf/](docs/pdf/)):
 - [docs/guia_del_equipo.md](docs/guia_del_equipo.md): **empiecen por aquí**. Todo el proyecto explicado de forma sencilla, con preguntas probables de la sustentación.
 - [docs/avance_sesion2.md](docs/avance_sesion2.md): **entregable de la sesión 2** (código y pruebas de C1–C3, análisis teórico y plan de experimentos) en un solo documento.
+- [docs/word/](docs/word/): versiones **.docx editables** (Google Drive / Word) del análisis teórico, el avance, el plan de experimentos y el informe; se regeneran con `python docs/word/generar_word.py`.
 - [docs/requerimientos.md](docs/requerimientos.md): requerimientos del enunciado y checklist.
 - [docs/analisis_teorico_c1_c3.md](docs/analisis_teorico_c1_c3.md): análisis teórico de C1–C3 (avance de la sesión 2).
 - [docs/plan_experimentos.md](docs/plan_experimentos.md): hipótesis, protocolo y resultados preliminares.
@@ -45,8 +46,6 @@ Requiere Python 3.10+. Todos los comandos se corren desde la raíz del repo.
     python -m experimentos.exp_c6_mapreduce         # ~5 min (usa todos los núcleos)
     python -m experimentos.exp_casos_y_memoria      # ~3 min: mejor/peor caso de C1 y memoria
     python -m experimentos.correr_todo              # todos los anteriores, en orden (~20 min)
-
-El informe y el avance llevan la portada institucional: después de regenerar sus PDF, ejecutar `python docs/portadas/agregar_portadas.py` (usa Chromium y `pdfunite`).
 
 Las diapositivas se regeneran desde los CSV con `docs/diapositivas/generar_diapositivas.js` (requiere Node y `pptxgenjs`).
 
