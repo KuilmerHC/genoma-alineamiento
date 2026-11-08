@@ -8,9 +8,9 @@ Esta guía explica **todo lo que hay hoy en el repositorio** con palabras sencil
 
 | Integrante | Componentes | Hilo común |
 |---|---|---|
-| **Kuilmer** | C1 merge sort + C4 quicksort | ordenar en memoria (y comparar los dos) |
+| **Santiago** | C1 merge sort + C4 quicksort | ordenar en memoria (y comparar los dos) |
 | **Juan José** | C2 arreglo dinámico + C5 ordenamiento externo | estructuras de datos y memoria secundaria |
-| **Santiago** | C3 Smith-Waterman + C6 MapReduce | alinear lecturas y hacerlo en paralelo |
+| **Kuilmer** | C3 Smith-Waterman + C6 MapReduce | alinear lecturas y hacerlo en paralelo |
 
 Cada uno es "dueño" de dos componentes: los explica en la presentación y ayuda a los otros dos a entenderlos. Pero **todos** deben poder responder sobre los seis.
 
@@ -560,17 +560,17 @@ Las diapositivas están en `docs/diapositivas/sustentacion_grupo3.pptx`. **Cada 
 
 | # | Lámina | Quién | Tiempo | La idea que tiene que quedar |
 |---|---|---|---|---|
-| 1 | Portada | Kuilmer | 0:30 | Quiénes somos y qué hace cada uno |
-| 2 | Buscar 50 letras en un millón | Kuilmer | 1:00 | Índice de k-mers → región pequeña → alineamiento fino |
-| 3 | C1 merge sort | Kuilmer | 1:15 | 2T(n/2)+Θ(n), Maestro caso 2; cota log₂ n!; mejor y peor caso exactos |
-| 4 | C4 quicksort | Kuilmer | 1:15 | prob. 2/(j−i+1) ⇒ 2n ln n; vale para toda entrada; ordena en su lugar |
+| 1 | Portada | Santiago | 0:30 | Quiénes somos y qué hace cada uno |
+| 2 | Buscar 50 letras en un millón | Santiago | 1:00 | Índice de k-mers → región pequeña → alineamiento fino |
+| 3 | C1 merge sort | Santiago | 1:15 | 2T(n/2)+Θ(n), Maestro caso 2; cota log₂ n!; mejor y peor caso exactos |
+| 4 | C4 quicksort | Santiago | 1:15 | prob. 2/(j−i+1) ⇒ 2n ln n; vale para toda entrada; ordena en su lugar |
 | 5 | C2 arreglo dinámico | Juan José | 1:00 | 3 créditos: 1 escribe, 2 ahorran; saldo nunca negativo ⇒ O(1) amortizado |
 | 6 | C5 ordenamiento externo | Juan José | 1:15 | 2(N/B)(1 + ⌈log_k(N/M)⌉); 10 de 10 exactas |
-| 7 | C3 Smith-Waterman | Santiago | 1:00 | H[i][j] con 3 vecinas + 0; subestructura y superposición; Θ(mn) |
-| 8 | C6 MapReduce | Santiago | 1:30 | Amdahl; 5,3× vs 7,6×; Karp-Flatt ≈ 0,07; techo 1/f |
+| 7 | C3 Smith-Waterman | Kuilmer | 1:00 | H[i][j] con 3 vecinas + 0; subestructura y superposición; Θ(mn) |
+| 8 | C6 MapReduce | Kuilmer | 1:30 | Amdahl; 5,3× vs 7,6×; Karp-Flatt ≈ 0,07; techo 1/f |
 | 9 | Validación | Juan José | 0:45 | Los conteos coinciden exacto; las pendientes también |
-| 10 | Discusión | Santiago | 0:45 | Los segundos dependen de intérprete, caché y hardware |
-| 11 | Conclusiones | Kuilmer | 0:30 | Todo funciona, todo está probado y medido; ¿preguntas? |
+| 10 | Discusión | Kuilmer | 0:45 | Los segundos dependen de intérprete, caché y hardware |
+| 11 | Conclusiones | Santiago | 0:30 | Todo funciona, todo está probado y medido; ¿preguntas? |
 
 **Total ≈ 11 min.** El texto de las notas, leído en voz alta, dura ≈ 8,5 min; con pausas, señalando las gráficas y con los cambios de expositor queda en 10–11 min. Si el ensayo se pasa de 12 minutos, recorten primero en las láminas 2, 9 y 10.
 

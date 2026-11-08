@@ -258,9 +258,9 @@ W = Θ(n log n) + R·c_L + Θ(R)        D = Θ(n log n) + c_L + Θ(R)
 
 | Integrante | Componentes | Otras tareas |
 |---|---|---|
-| Kuilmer Santiago Hernández Cruz | **C1** merge sort y cota inferior; **C4** quicksort aleatorizado y su comparación con C1 (ordenamiento en memoria) | Generador de datos y codificación de k-mers; harness de medición (`bench.py`); organización del repositorio y README; secciones 1, 2 y 4 del informe |
+| Santiago Serrano Cuellar | **C1** merge sort y cota inferior; **C4** quicksort aleatorizado y su comparación con C1 (ordenamiento en memoria) | Generador de datos y codificación de k-mers; harness de medición (`bench.py`); organización del repositorio y README; secciones 1, 2 y 4 del informe |
 | Juan José Berrio Español | **C2** arreglo dinámico y método contable; **C5** ordenamiento externo (estructuras y memoria secundaria) | `DiscoSimulado`, min-heap e índice de semillas; tabla de E/S contadas frente a predichas; teoría de C2 y C5 en el informe |
-| Santiago Serrano Cuellar | **C3** Smith-Waterman; **C6** MapReduce (alineamiento y su paralelización) | Alineador por votos de semillas; experimento de speedup, Amdahl y Karp-Flatt; teoría de C3 y C6 y sección 5 (discusión) del informe |
+| Kuilmer Santiago Hernández Cruz | **C3** Smith-Waterman; **C6** MapReduce (alineamiento y su paralelización) | Alineador por votos de semillas; experimento de speedup, Amdahl y Karp-Flatt; teoría de C3 y C6 y sección 5 (discusión) del informe |
 
 ## 7. Referencias
 

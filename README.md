@@ -2,7 +2,7 @@
 
 Grupo 3: alineamiento de lecturas genómicas sintéticas sobre un genoma de referencia sintético, usando k-mers como semillas.
 
-Integrantes: Kuilmer Santiago Hernández Cruz (C1, C4), Juan José Berrio Español (C2, C5) y Santiago Serrano Cuellar (C3, C6).
+Integrantes: Kuilmer Santiago Hernández Cruz (C3, C6), Juan José Berrio Español (C2, C5) y Santiago Serrano Cuellar (C1, C4).
 
 Documentos (versiones PDF para entregar en [docs/pdf/](docs/pdf/)):
 - [docs/guia_del_equipo.md](docs/guia_del_equipo.md): **empiecen por aquí**. Todo el proyecto explicado de forma sencilla, con preguntas probables de la sustentación.

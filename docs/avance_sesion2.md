@@ -19,9 +19,9 @@ El enunciado pide para la sesión 2: código de C1, C2 y C3 con pruebas, anális
 
 | Integrante | Componente |
 |---|---|
-| Kuilmer Santiago Hernández Cruz | C1 (merge sort), generador de datos y harness de medición |
+| Santiago Serrano Cuellar | C1 (merge sort), generador de datos y harness de medición |
 | Juan José Berrio Español | C2 (arreglo dinámico) e índice de semillas |
-| Santiago Serrano Cuellar | C3 (Smith-Waterman) y alineador |
+| Kuilmer Santiago Hernández Cruz | C3 (Smith-Waterman) y alineador |
 
 El plan de experimentos se redactó entre los tres.
 

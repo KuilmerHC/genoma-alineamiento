@@ -137,7 +137,7 @@ function opcionesGrafica(extra) {
 }
 
 // =====================================================================================
-// 1. Portada (Kuilmer)
+// 1. Portada (Santiago)
 // =====================================================================================
 {
   const s = pres.addSlide({ masterName: "PORTADA" });
@@ -155,11 +155,11 @@ function opcionesGrafica(extra) {
     { text: "Kuilmer Santiago Hernández Cruz · Juan José Berrio Español · Santiago Serrano Cuellar", options: { breakLine: true } },
     { text: "Análisis de Algoritmos (SIST0175) · Grupo 3" },
   ], { x: 0.6, y: 4.3, w: 8.8, h: 0.7, fontSize: 14, color: C.background2, margin: 0, isTextBox: true, valign: "top" });
-  s.addNotes("KUILMER (≈30 s). Buenos días. Somos el grupo 3: Kuilmer, Juan José y Santiago. Nuestro caso es el alineamiento de lecturas genómicas: encontrar de qué parte de un genoma salió cada pedacito de ADN, aunque venga con errores. Cada uno presenta dos componentes: yo C1 y C4, Juan José C2 y C5, Santiago C3 y C6.");
+  s.addNotes("SANTIAGO (≈30 s). Buenos días. Somos el grupo 3: Santiago, Juan José y Kuilmer. Nuestro caso es el alineamiento de lecturas genómicas: encontrar de qué parte de un genoma salió cada pedacito de ADN, aunque venga con errores. Cada uno presenta dos componentes: yo C1 y C4, Juan José C2 y C5, Kuilmer C3 y C6.");
 }
 
 // =====================================================================================
-// 2. Caso y arquitectura (Kuilmer)
+// 2. Caso y arquitectura (Santiago)
 // =====================================================================================
 {
   const s = pres.addSlide({ masterName: "CONTENIDO" });
@@ -192,11 +192,11 @@ function opcionesGrafica(extra) {
   dato(s, 0.5, 3.95, 2.8, "100 / 100", "lecturas ubicadas a ≤ 3 bases de su posición real");
   dato(s, 3.6, 3.95, 2.8, "156", "pruebas automáticas (pytest), todas pasan");
   dato(s, 6.7, 3.95, 2.8, "0", "usos de sorted / heapq en el núcleo de los componentes", C.accent2);
-  s.addNotes("KUILMER (≈1 min). La idea es la del índice de un libro. Primero sacamos todos los k-mers del genoma, palabras de k letras codificadas en 2 bits, así comparar es comparar enteros. Los ordenamos (C1, C4, o C5 si no caben en memoria) y armamos el índice: cada k-mer con su lista de posiciones en un arreglo dinámico (C2). Cada lectura busca sus k-mers por búsqueda binaria; cada coincidencia vota por dónde empieza la lectura; y solo en esa región hacemos el alineamiento fino con Smith-Waterman (C3). C6 reparte las lecturas entre procesos. Resultado: alineamos contra unas 70 bases en vez de un millón.");
+  s.addNotes("SANTIAGO (≈1 min). La idea es la del índice de un libro. Primero sacamos todos los k-mers del genoma, palabras de k letras codificadas en 2 bits, así comparar es comparar enteros. Los ordenamos (C1, C4, o C5 si no caben en memoria) y armamos el índice: cada k-mer con su lista de posiciones en un arreglo dinámico (C2). Cada lectura busca sus k-mers por búsqueda binaria; cada coincidencia vota por dónde empieza la lectura; y solo en esa región hacemos el alineamiento fino con Smith-Waterman (C3). C6 reparte las lecturas entre procesos. Resultado: alineamos contra unas 70 bases en vez de un millón.");
 }
 
 // =====================================================================================
-// 3. C1 merge sort (Kuilmer)
+// 3. C1 merge sort (Santiago)
 // =====================================================================================
 {
   const s = pres.addSlide({ masterName: "CONTENIDO" });
@@ -220,11 +220,11 @@ function opcionesGrafica(extra) {
     title: "Comparaciones / (n log₂ n)", chartColors: [HEX.coral, HEX.teal, HEX.gris, HEX.ambar],
     valAxisMinVal: 0, valAxisMaxVal: 1.1, valAxisLabelFormatCode: "0.0", lineDataSymbol: "circle",
   }));
-  s.addNotes("KUILMER (≈1 min 15 s). Merge sort parte en dos mitades, ordena cada una y las mezcla en tiempo lineal: T(n) = 2T(n/2) + Θ(n). Por el Teorema Maestro, a = 2, b = 2, f(n) = n, que es igual a n elevado a log base b de a: caso 2, Θ(n log n). La cota inferior sale del árbol de decisión: hay n! órdenes posibles, un árbol binario con n! hojas tiene altura al menos log2 n!, que es n log n. La gráfica muestra las comparaciones medidas dividido n log n: el peor caso (entrada intercalada) y el mejor (entrada ordenada) coinciden exactamente con la fórmula, y la aleatoria queda por encima de log2 n!. En tiempo, la pendiente log-log da 1,12 frente a 1,10 que predice n log n en ese rango.");
+  s.addNotes("SANTIAGO (≈1 min 15 s). Merge sort parte en dos mitades, ordena cada una y las mezcla en tiempo lineal: T(n) = 2T(n/2) + Θ(n). Por el Teorema Maestro, a = 2, b = 2, f(n) = n, que es igual a n elevado a log base b de a: caso 2, Θ(n log n). La cota inferior sale del árbol de decisión: hay n! órdenes posibles, un árbol binario con n! hojas tiene altura al menos log2 n!, que es n log n. La gráfica muestra las comparaciones medidas dividido n log n: el peor caso (entrada intercalada) y el mejor (entrada ordenada) coinciden exactamente con la fórmula, y la aleatoria queda por encima de log2 n!. En tiempo, la pendiente log-log da 1,12 frente a 1,10 que predice n log n en ese rango.");
 }
 
 // =====================================================================================
-// 4. C4 quicksort (Kuilmer)
+// 4. C4 quicksort (Santiago)
 // =====================================================================================
 {
   const s = pres.addSlide({ masterName: "CONTENIDO" });
@@ -248,7 +248,7 @@ function opcionesGrafica(extra) {
     title: "Comparaciones / (n log₂ n)", chartColors: [HEX.teal, HEX.coral, HEX.ambar],
     valAxisMinVal: 0, valAxisMaxVal: 1.4, valAxisLabelFormatCode: "0.0", lineDataSymbol: "circle",
   }));
-  s.addNotes("KUILMER (≈1 min 15 s). Quicksort elige un pivote al azar y separa en menores, iguales y mayores. El análisis: dos elementos solo se comparan si uno de ellos es el primer pivote elegido entre los que están entre ellos, con probabilidad 2/(j−i+1); sumando, la esperanza es 2(n+1)Hn − 4n, más o menos 2n ln n. Esa esperanza es sobre los pivotes, no sobre los datos: vale para cualquier entrada. Medido: entre 0,99 y 1,03 veces lo esperado. Frente a merge sort hace un 33 % más comparaciones, pero ordena en su lugar: no usa memoria extra, por eso lo usamos en C5. Con k-mers repetidos la partición de 3 vías baja las comparaciones, como predice O(n log u).");
+  s.addNotes("SANTIAGO (≈1 min 15 s). Quicksort elige un pivote al azar y separa en menores, iguales y mayores. El análisis: dos elementos solo se comparan si uno de ellos es el primer pivote elegido entre los que están entre ellos, con probabilidad 2/(j−i+1); sumando, la esperanza es 2(n+1)Hn − 4n, más o menos 2n ln n. Esa esperanza es sobre los pivotes, no sobre los datos: vale para cualquier entrada. Medido: entre 0,99 y 1,03 veces lo esperado. Frente a merge sort hace un 33 % más comparaciones, pero ordena en su lugar: no usa memoria extra, por eso lo usamos en C5. Con k-mers repetidos la partición de 3 vías baja las comparaciones, como predice O(n log u).");
 }
 
 // =====================================================================================
@@ -321,7 +321,7 @@ function opcionesGrafica(extra) {
 }
 
 // =====================================================================================
-// 7. C3 Smith-Waterman (Santiago)
+// 7. C3 Smith-Waterman (Kuilmer)
 // =====================================================================================
 {
   const s = pres.addSlide({ masterName: "CONTENIDO" });
@@ -345,11 +345,11 @@ function opcionesGrafica(extra) {
     valAxisLogScaleBase: 10, valAxisLabelFormatCode: "0.0000", lineDataSymbol: "circle",
     catAxisTitle: "n = m", showCatAxisTitle: true, valAxisTitle: "segundos", showValAxisTitle: true,
   }));
-  s.addNotes("SANTIAGO (≈1 min). Smith-Waterman alinea la lectura con la región candidata tolerando errores. Cada columna suma +2 si las letras coinciden, −1 si no, −2 si hay un hueco. H[i][j] es el mejor puntaje de un alineamiento que termina en esas dos letras; se calcula con solo tres vecinas y el 0 permite reiniciar: eso lo hace local. Es programación dinámica porque tiene subestructura óptima, se prueba cortando la última columna, y subproblemas superpuestos: la recursión ingenua es exponencial pero solo hay (m+1)(n+1) celdas. Se llenan todas siempre: Θ(mn) en los tres casos. Medido con m = n: pendiente 2,08. En el pipeline la región es de 70 bases, por eso cada lectura es barata.");
+  s.addNotes("KUILMER (≈1 min). Smith-Waterman alinea la lectura con la región candidata tolerando errores. Cada columna suma +2 si las letras coinciden, −1 si no, −2 si hay un hueco. H[i][j] es el mejor puntaje de un alineamiento que termina en esas dos letras; se calcula con solo tres vecinas y el 0 permite reiniciar: eso lo hace local. Es programación dinámica porque tiene subestructura óptima, se prueba cortando la última columna, y subproblemas superpuestos: la recursión ingenua es exponencial pero solo hay (m+1)(n+1) celdas. Se llenan todas siempre: Θ(mn) en los tres casos. Medido con m = n: pendiente 2,08. En el pipeline la región es de 70 bases, por eso cada lectura es barata.");
 }
 
 // =====================================================================================
-// 8. C6 MapReduce (Santiago)
+// 8. C6 MapReduce (Kuilmer)
 // =====================================================================================
 {
   const s = pres.addSlide({ masterName: "CONTENIDO" });
@@ -373,7 +373,7 @@ function opcionesGrafica(extra) {
     valAxisMinVal: 0, valAxisLabelFormatCode: "0", lineDataSymbol: "circle",
     catAxisTitle: "procesos p", showCatAxisTitle: true,
   }));
-  s.addNotes("SANTIAGO (≈1 min 30 s). Cada lectura se alinea sola, así que repartimos bloques entre p procesos (map) y unimos en orden (reduce). Amdahl dice que si una fracción f es serial, el speedup nunca pasa de 1/f. Medimos directamente la parte serial, crear procesos y el reduce: 0,7 %. Con eso Amdahl predecía 7,6× con 8 procesos y medimos 5,3×: la hipótesis tal cual no se cumplió. La métrica de Karp-Flatt calcula la fracción serial que implica el speedup medido: da 7 %, constante entre 2 y 8 procesos, y con ese valor Amdahl acierta. La explicación más probable es copy-on-write: cada proceso hijo termina copiando las páginas del índice porque Python escribe contadores en cada objeto. Con 16 no mejora porque hay 8 núcleos físicos. Y en el sistema completo, construir el índice es serial, 34 % del tiempo: el techo es 3×, y medimos 2,2×.");
+  s.addNotes("KUILMER (≈1 min 30 s). Cada lectura se alinea sola, así que repartimos bloques entre p procesos (map) y unimos en orden (reduce). Amdahl dice que si una fracción f es serial, el speedup nunca pasa de 1/f. Medimos directamente la parte serial, crear procesos y el reduce: 0,7 %. Con eso Amdahl predecía 7,6× con 8 procesos y medimos 5,3×: la hipótesis tal cual no se cumplió. La métrica de Karp-Flatt calcula la fracción serial que implica el speedup medido: da 7 %, constante entre 2 y 8 procesos, y con ese valor Amdahl acierta. La explicación más probable es copy-on-write: cada proceso hijo termina copiando las páginas del índice porque Python escribe contadores en cada objeto. Con 16 no mejora porque hay 8 núcleos físicos. Y en el sistema completo, construir el índice es serial, 34 % del tiempo: el techo es 3×, y medimos 2,2×.");
 }
 
 // =====================================================================================
@@ -401,11 +401,11 @@ function opcionesGrafica(extra) {
     rowH: 0.47, valign: "middle", margin: [0.03, 0.08, 0.03, 0.08] });
   s.addText("Protocolo: perf_counter, 5 repeticiones, mediana y Q1–Q3, datos fuera del tiempo medido, ≥ 5 tamaños en progresión geométrica, pendiente por mínimos cuadrados en log-log.",
     { x: 0.5, y: 4.55, w: 9, h: 0.5, fontSize: 11, color: "5B6B70", margin: 0, isTextBox: true, valign: "top" });
-  s.addNotes("JUAN JOSÉ (≈45 s). Resumen de la validación. Seguimos el protocolo: perf_counter, cinco repeticiones, mediana con su dispersión, datos generados fuera del tiempo y pendiente en log-log. Lo importante: todo lo que es un conteo, comparaciones, créditos, celdas, transferencias de bloque, coincide exactamente o dentro de la variación aleatoria, y las pendientes coinciden con la teoría. La única hipótesis que no se cumplió tal cual fue la de Amdahl en C6, y Santiago va a explicar por qué en la discusión.");
+  s.addNotes("JUAN JOSÉ (≈45 s). Resumen de la validación. Seguimos el protocolo: perf_counter, cinco repeticiones, mediana con su dispersión, datos generados fuera del tiempo y pendiente en log-log. Lo importante: todo lo que es un conteo, comparaciones, créditos, celdas, transferencias de bloque, coincide exactamente o dentro de la variación aleatoria, y las pendientes coinciden con la teoría. La única hipótesis que no se cumplió tal cual fue la de Amdahl en C6, y Kuilmer va a explicar por qué en la discusión.");
 }
 
 // =====================================================================================
-// 10. Discusión (Santiago)
+// 10. Discusión (Kuilmer)
 // =====================================================================================
 {
   const s = pres.addSlide({ masterName: "CONTENIDO" });
@@ -417,11 +417,11 @@ function opcionesGrafica(extra) {
   tarjeta(s, 5.15, 1.15, 4.35, 3.75, "No coincide (y la causa)",
     "• Intérprete: ≈ 140 ns por comparación, unas 100 veces C; cambia c, no la pendiente\n\n• Caché: T/(n log n) sube 13 % con n ≥ 10⁵; SW con m = n da 2,08\n\n• C6: copy-on-write del índice heredado por fork y SMT (8 núcleos reales)",
     { tam: 15.5, colorTitulo: C.accent2 });
-  s.addNotes("SANTIAGO (≈45 s). Donde coincide: en todo lo que es un conteo de operaciones, y en las pendientes. Donde no: los segundos. Python cuesta unas cien veces más por operación que C, pero eso solo cambia la constante. Con n grande los datos dejan de caber en caché y el tiempo por elemento sube un poco, por eso Smith-Waterman con m = n da 2,08 y no 2. Y en C6 aparece un sobrecosto que se comporta como serial: los procesos hijos copian el índice que heredan, y los 16 hilos son en realidad 8 núcleos.");
+  s.addNotes("KUILMER (≈45 s). Donde coincide: en todo lo que es un conteo de operaciones, y en las pendientes. Donde no: los segundos. Python cuesta unas cien veces más por operación que C, pero eso solo cambia la constante. Con n grande los datos dejan de caber en caché y el tiempo por elemento sube un poco, por eso Smith-Waterman con m = n da 2,08 y no 2. Y en C6 aparece un sobrecosto que se comporta como serial: los procesos hijos copian el índice que heredan, y los 16 hilos son en realidad 8 núcleos.");
 }
 
 // =====================================================================================
-// 11. Cierre (Kuilmer)
+// 11. Cierre (Santiago)
 // =====================================================================================
 {
   const s = pres.addSlide({ masterName: "CIERRE" });
@@ -433,9 +433,9 @@ function opcionesGrafica(extra) {
   ], { x: 0.6, y: 1.15, w: 8.8, h: 1.6, fontSize: 16, color: C.background1, margin: 0, isTextBox: true,
     valign: "top", paraSpaceAfter: 8 });
   const equipo = [
-    ["Kuilmer Santiago Hernández Cruz", "C1 merge sort · C4 quicksort"],
+    ["Santiago Serrano Cuellar", "C1 merge sort · C4 quicksort"],
     ["Juan José Berrio Español", "C2 arreglo dinámico · C5 ordenamiento externo"],
-    ["Santiago Serrano Cuellar", "C3 Smith-Waterman · C6 MapReduce"],
+    ["Kuilmer Santiago Hernández Cruz", "C3 Smith-Waterman · C6 MapReduce"],
   ];
   equipo.forEach(([nombre, comp], i) => {
     const x = 0.6 + i * 3.0;
@@ -448,7 +448,7 @@ function opcionesGrafica(extra) {
   });
   s.addText("¿Preguntas?", { x: 0.6, y: 4.55, w: 8.8, h: 0.5, fontSize: 22, bold: true, color: C.accent3,
     fontFace: THEME.headFontFace, margin: 0, isTextBox: true });
-  s.addNotes("KUILMER (≈30 s). Para cerrar: los seis componentes funcionan juntos y ubican correctamente las lecturas; cada afirmación de complejidad tiene una prueba y un experimento, y donde la práctica se alejó de la teoría, en C6, lo explicamos. La lección: el análisis asintótico predice cómo crece el costo y cuántas operaciones se hacen; los segundos dependen también de la memoria, el intérprete y el hardware. Gracias, quedamos atentos a sus preguntas.");
+  s.addNotes("SANTIAGO (≈30 s). Para cerrar: los seis componentes funcionan juntos y ubican correctamente las lecturas; cada afirmación de complejidad tiene una prueba y un experimento, y donde la práctica se alejó de la teoría, en C6, lo explicamos. La lección: el análisis asintótico predice cómo crece el costo y cuántas operaciones se hacen; los segundos dependen también de la memoria, el intérprete y el hardware. Gracias, quedamos atentos a sus preguntas.");
 }
 
 (async () => {
