@@ -46,6 +46,8 @@ Requiere Python 3.10+. Todos los comandos se corren desde la raíz del repo.
     python -m experimentos.exp_casos_y_memoria      # ~3 min: mejor/peor caso de C1 y memoria
     python -m experimentos.correr_todo              # todos los anteriores, en orden (~20 min)
 
+El informe y el avance llevan la portada institucional: después de regenerar sus PDF, ejecutar `python docs/portadas/agregar_portadas.py` (usa Chromium y `pdfunite`).
+
 Las diapositivas se regeneran desde los CSV con `docs/diapositivas/generar_diapositivas.js` (requiere Node y `pptxgenjs`).
 
 Los archivos `datos/*.txt` no se versionan: se regeneran con el comando anterior (la semilla fija garantiza los mismos datos).
