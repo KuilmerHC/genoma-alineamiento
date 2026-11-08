@@ -4,6 +4,16 @@ Esta guía explica **todo lo que hay hoy en el repositorio** con palabras sencil
 
 > Regla de oro de la sustentación: el profesor puede preguntarle a **cualquiera** sobre **cualquier** componente, no solo sobre los que programó. Léanla completa.
 
+### Reparto del trabajo
+
+| Integrante | Componentes | Hilo común |
+|---|---|---|
+| **Kuilmer** | C1 merge sort + C4 quicksort | ordenar en memoria (y comparar los dos) |
+| **Juan José** | C2 arreglo dinámico + C5 ordenamiento externo | estructuras de datos y memoria secundaria |
+| **Santiago** | C3 Smith-Waterman + C6 MapReduce | alinear lecturas y hacerlo en paralelo |
+
+Cada uno es "dueño" de dos componentes: los explica en la presentación y ayuda a los otros dos a entenderlos. Pero **todos** deben poder responder sobre los seis.
+
 ---
 
 ## 1. ¿De qué trata el proyecto?

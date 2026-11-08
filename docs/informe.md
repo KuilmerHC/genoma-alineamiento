@@ -2,6 +2,8 @@
 
 **Informe técnico (borrador): Proyecto Final Integrador, Análisis de Algoritmos (SIST0175), Grupo 3**
 
+Kuilmer Santiago Hernández Cruz · Juan José Berrio Español · Santiago Serrano Cuellar
+
 ## 1. Descripción del caso
 
 **Problema.** Dado un genoma de referencia G de n bases sobre Σ = {A, C, G, T} y un conjunto de R lecturas cortas (m = 50 bases) copiadas de G con errores, se quiere encontrar para cada lectura la posición de G de la que proviene y su alineamiento. Las lecturas tienen sustituciones, inserciones y borrados. Comparar cada lectura contra todo G por programación dinámica cuesta Θ(m·n) por lectura, prohibitivo para n = 10⁶. La estrategia estándar, *seed and extend*, es indexar los k-mers de G, usar los k-mers de la lectura como **semillas** para encontrar una región candidata pequeña y alinear solo contra esa región.
@@ -249,13 +251,13 @@ W = Θ(n log n) + R·c_L + Θ(R)        D = Θ(n log n) + c_L + Θ(R)
 - **El único desacuerdo relevante, el speedup de C6, también se explica:** la métrica de Karp-Flatt identifica un sobrecosto que se comporta como fracción serial, y la ley de Amdahl aplicada al sistema completo muestra que la construcción serial del índice es el cuello de botella.
 - **Lección general:** el análisis asintótico predice **cómo crece** el costo y el **número de operaciones**. Los segundos dependen además de la jerarquía de memoria, el intérprete y el hardware.
 
-**Reparto del trabajo** (a completar por el equipo):
+**Reparto del trabajo.** Cada integrante tuvo dos componentes con un hilo común, y los tres revisaron y pueden explicar los seis.
 
-| Integrante | Componentes y tareas |
-|---|---|
-| «nombre» | |
-| «nombre» | |
-| «nombre» | |
+| Integrante | Componentes | Otras tareas |
+|---|---|---|
+| Kuilmer Santiago Hernández Cruz | **C1** merge sort y cota inferior; **C4** quicksort aleatorizado y su comparación con C1 (ordenamiento en memoria) | Generador de datos y codificación de k-mers; harness de medición (`bench.py`); organización del repositorio y README; secciones 1, 2 y 4 del informe |
+| Juan José Berrio Español | **C2** arreglo dinámico y método contable; **C5** ordenamiento externo (estructuras y memoria secundaria) | `DiscoSimulado`, min-heap e índice de semillas; tabla de E/S contadas frente a predichas; teoría de C2 y C5 en el informe |
+| Santiago Serrano Cuellar | **C3** Smith-Waterman; **C6** MapReduce (alineamiento y su paralelización) | Alineador por votos de semillas; experimento de speedup, Amdahl y Karp-Flatt; teoría de C3 y C6 y sección 5 (discusión) del informe |
 
 ## 7. Referencias
 

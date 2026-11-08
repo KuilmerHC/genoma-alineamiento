@@ -173,7 +173,7 @@ Gráficas: [experimentos/graficas/](../experimentos/graficas/). Datos: [experime
 
 ### Discrepancias observadas y explicación
 
-- **C1, T/(n log n) sube ≈ 15 % para n ≥ 10⁵.** Las comparaciones por elemento casi no cambian, así que no es un efecto algorítmico. Es memoria: con n grande, las listas de Python (punteros a tuplas dispersas en el heap) ya no caben en caché, y cada slice y cada lista nueva de `mezclar` reserva y copia más memoria. Para la entrega final lo comprobaremos midiendo con `tracemalloc` y repitiendo con arreglos de NumPy (memoria contigua).
+- **C1, T/(n log n) sube para n ≥ 10⁵ (hasta 13 % sobre la media).** Las comparaciones por elemento casi no cambian, así que no es un efecto algorítmico. Es memoria: con n grande, las listas de Python (punteros a tuplas dispersas en el heap) ya no caben en caché, y cada slice y cada lista nueva de `mezclar` reserva y copia más memoria. Para la entrega final lo comprobaremos midiendo con `tracemalloc` y repitiendo con arreglos de NumPy (memoria contigua).
 - **C3 cuadrado, el costo por celda sube de 119 a 165 ns.** La tabla H de 2049×2049 enteros de Python ocupa decenas de MB y deja de caber en caché. Con m = 50 la tabla es pequeña y la razón queda casi plana (±4 %). Por eso la pendiente da 2,08 y no 2,00.
 - **C2, costo/n ≈ 2,02 y no 3.** No es un error. Con n = 1000·2ⁱ el arreglo está justo antes de una duplicación (la capacidad es 1024·2ⁱ), y la cota 3n solo se alcanza con n = 2ʲ + 1. Por eso el experimento mide ambos casos.
 - **Constantes del intérprete.** ≈ 140 ns por comparación o por celda es del orden de 100 veces más que en C. Las constantes cambian, pero no las pendientes, que es lo que valida la teoría.
