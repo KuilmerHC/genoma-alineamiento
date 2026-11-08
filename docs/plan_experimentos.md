@@ -89,7 +89,7 @@ python -m experimentos.exp_c3_smith_waterman
 - **Mediciones:** comparaciones/(n ln n) (debe tender a 2), tiempo frente a C1 sobre los mismos datos y en la misma máquina, dispersión entre semillas.
 - **Criterio de aceptación:**
   - comparaciones/(2n ln n) en [0,85; 1,05];
-  - quicksort hace más comparaciones que merge sort (≈ 1,39 frente a ≈ 0,93 veces n log₂ n), y se discute por qué aun así puede ser más rápido o más lento en Python.
+  - quicksort hace más comparaciones que merge sort (con n = 5·10⁵ la fórmula exacta da ≈ 1,23·n log₂ n, que tiende a 1,39 cuando n → ∞; merge sort hace ≈ 0,93), y se discute por qué aun así puede ser más rápido o más lento en Python.
 
 ### H5: C5 external merge sort sobre `DiscoSimulado` (sesión 3)
 
@@ -126,7 +126,7 @@ python -m experimentos.exp_c3_smith_waterman
 
 - **Hipótesis:** rank(c, i) cuesta Θ(log σ) = Θ(2) consultas de rank sobre vectores de bits, es decir O(1) respecto de n; memoria ≈ n·log₂ σ bits.
 
-## 3. Resultados preliminares de C1, C2 y C3
+## 3. Resultados
 
 Ejecución en esta máquina, Python 3.11, 5 repeticiones por punto.
 
@@ -136,6 +136,12 @@ Ejecución en esta máquina, Python 3.11, 5 repeticiones por punto.
 | H2 arreglo dinámico | **1,01** | 1 | costo/n = 2,02 en n = 1000·2ⁱ y 2,997–3,000 (siempre < 3) en n = 2ʲ + 1; saldo mínimo = 0; 230–250 ns por append (desviación máx. 4 %) | Sí |
 | H3a SW, m = 50 | **1,02** | 1 | T/(mn) entre 133 y 143 ns por celda (desviación máx. 4 %) | Sí |
 | H3b SW, m = n | **2,08** | 2 | T/(mn) entre 119 y 165 ns por celda (desviación máx. 22 %, ver discrepancias) | Sí |
+| H4 quicksort | **1,14** | ≈ 1,10 | comparaciones/esperadas = 0,989–1,028 (distintas), 0,977–1,036 (entrada ordenada); con k-mers repetidos C/(n log₂ n) baja de 1,06 a 0,80 | Sí |
+| H5 ordenamiento externo | 1,09 (tiempo) | — | E/S contadas = predichas en 10/10 configuraciones (error 0 %), 1 a 6 pasadas; pico de memoria = M | Sí |
+| H6a MapReduce, T₁ vs R | **1,01** | 1 | 0,57 ms por lectura | Sí |
+| H6b MapReduce, speedup | — | Amdahl ±15 % | alineamiento: S(8) = 5,27 frente a 7,64 con f medida = 0,007 (**fuera del criterio**); Karp-Flatt ≈ 0,07 constante para p ≤ 8 → Amdahl con f = 0,069 acierta a ±3 %; sistema completo: S(8) = 2,18 frente a 2,38 (dentro del criterio) | Parcial |
+
+El detalle de C4–C6 (tablas de E/S, speedup y la explicación de la discrepancia de C6) está en el informe ([informe.md](informe.md), secciones 4 y 5).
 
 Gráficas: [experimentos/graficas/](../experimentos/graficas/). Datos: [experimentos/resultados/](../experimentos/resultados/).
 

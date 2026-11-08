@@ -108,10 +108,10 @@ Siempre hay que decir **qué datos provocan** cada caso.
                                                   POSICIÓN + ALINEAMIENTO
 ```
 
-Componentes que vienen después (sesiones 3 y 4):
-- **C4:** otra forma de ordenar (quicksort aleatorizado) para compararla con C1.
-- **C5:** ordenar cuando los datos **no caben en memoria** (ordenamiento externo).
-- **C6:** repartir las lecturas entre varios procesos que trabajan **en paralelo**.
+Los otros tres componentes:
+- **C4:** otra forma de ordenar (quicksort aleatorizado), para compararla con C1. También ordena cada pedazo en C5.
+- **C5:** construir el índice de un genoma que **no cabe en memoria** (ordenamiento externo sobre un disco simulado).
+- **C6:** repartir las lecturas entre varios procesos que trabajan **en paralelo** (MapReduce).
 
 ---
 
@@ -313,7 +313,151 @@ Archivos: `c3_smith_waterman/smith_waterman.py`, `tests/test_c3_smith_waterman.p
 
 ---
 
-## 8. Los experimentos: comprobar que la teoría se cumple
+## 8. C4: Quicksort aleatorizado (otra forma de ordenar)
+
+### Para qué lo usamos
+
+1. Para **comparar** con merge sort (C1), como pide el enunciado.
+2. En C5, para ordenar cada pedazo en memoria. Quicksort ordena **en el mismo arreglo**, sin listas auxiliares, y eso importa cuando la memoria está limitada.
+
+### Cómo funciona
+
+1. Se elige un elemento **al azar**: el **pivote**.
+2. Se reacomoda el arreglo en **tres zonas**: `[ menores | iguales | mayores ]`. Esta es la **partición de 3 vías**.
+3. Se repite lo mismo **solo** con la zona de menores y la de mayores. La zona de iguales ya quedó en su lugar.
+
+```
+[5 3 8 3 1 9 3]   pivote al azar = 3
+[1 | 3 3 3 | 5 8 9]   → falta ordenar [1] y [5 8 9]
+```
+
+**¿Por qué 3 zonas?** Porque los k-mers se repiten mucho. Con 2 zonas, los iguales se volverían a revisar una y otra vez. Con 3 zonas, si todos los elementos son iguales, basta una sola pasada: Θ(n).
+
+**¿Por qué al azar?** Si el pivote fuera siempre el primero, una lista **ya ordenada** daría siempre el peor pivote (el mínimo), y el algoritmo tardaría n²/2. Al azar, **ninguna entrada** es mala de forma sistemática.
+
+### Cuántas comparaciones hace (caso esperado)
+
+El análisis clave, en palabras:
+
+- Dos elementos se comparan **solo si uno de ellos fue pivote** mientras estaban juntos en la misma zona.
+- Si en orden son el i-ésimo y el j-ésimo, se comparan con probabilidad **2/(j − i + 1)**: de los j − i + 1 elementos entre ellos, alguno de los dos tiene que ser el primero en salir como pivote.
+- Se suman esas probabilidades para todos los pares (linealidad de la esperanza):
+
+```
+E[comparaciones] = 2(n+1)·Hₙ − 4n  ≈  2·n·ln n  ≈  1,39 · n·log₂ n
+```
+
+(Hₙ = 1 + 1/2 + … + 1/n ≈ ln n).
+
+> **Ojo:** la esperanza es sobre los **pivotes aleatorios**, no sobre los datos. Vale para **cualquier** entrada, incluso una ya ordenada.
+
+| Caso | Cuándo pasa | Costo |
+|---|---|---|
+| Mejor | el pivote siempre es la mediana; o todos los elementos iguales | Θ(n log n); Θ(n) si son todos iguales |
+| Esperado | siempre, para cualquier entrada | Θ(n log n), ≈ 1,39·n·log₂ n comparaciones |
+| Peor | el pivote siempre es el mínimo o el máximo (probabilidad casi cero) | Θ(n²) |
+
+El 1,39 es el valor al que se acerca cuando n es enorme. Con n = 500.000 la fórmula exacta da 1,23 (el −4n todavía pesa), y eso es justo lo que medimos.
+
+**Comparado con merge sort:** quicksort hace **más** comparaciones (≈ 1,23 contra ≈ 0,93 veces n·log₂ n en nuestros tamaños). Pero no necesita listas extra, y en otros lenguajes suele ser más rápido por el uso de la caché.
+
+Archivos: `c4_quicksort/quicksort.py`, `tests/test_c4_quicksort.py`.
+
+---
+
+## 9. C5: Ordenamiento externo (cuando los datos no caben en memoria)
+
+### El problema
+
+Imaginen que hay que ordenar un millón de fichas, pero en el escritorio solo caben **M** a la vez. El resto está en un archivador (el **disco**), y lo único que se puede hacer es traer o devolver **una carpeta de B fichas** a la vez (un **bloque**).
+
+Ir al archivador es **lentísimo** comparado con trabajar en el escritorio. Por eso aquí **no se cuenta el tiempo de CPU**: se cuentan las **transferencias de bloques** (E/S = entradas/salidas).
+
+### El disco simulado
+
+La clase `DiscoSimulado` es ese archivador:
+- guarda los registros en un archivo binario, en bloques de B registros;
+- cada registro mide 12 bytes: el k-mer (8 bytes) más la posición (4 bytes);
+- solo se puede acceder con `leer_bloque(i)` y `escribir_bloque(i, datos)`, y **cada llamada se cuenta**;
+- el enunciado **prohíbe** leer el archivo de cualquier otra forma.
+
+### El algoritmo, en dos fases
+
+**Fase 1, hacer corridas:** traer M registros al escritorio, ordenarlos con quicksort (C4) y devolverlos como una **corrida** (un tramo ordenado). Al final hay N/M corridas ordenadas.
+
+**Fase 2, mezclar:** igual que en merge sort, pero mezclando **muchas corridas a la vez**.
+- En el escritorio caben M/B carpetas. Se usa **una carpeta por corrida** más **una de salida**, así que se pueden mezclar **k = M/B − 1 corridas a la vez**.
+- Para saber cuál es el registro más pequeño entre las k corridas se usa un **min-heap** (implementado por nosotros).
+- Cada pasada divide el número de corridas por k, y se repite hasta que queda una sola.
+
+### La fórmula de E/S
+
+- **Cada pasada** (la fase 1 o una de mezcla) lee todos los bloques una vez y los escribe una vez: **2·N/B** E/S.
+- Hay **1** pasada de la fase 1 y **⌈log_k(N/M)⌉** pasadas de mezcla.
+
+```
+E/S = 2 · (N/B) · (1 + ⌈log_(M/B − 1)(N/M)⌉)
+```
+
+**Ejemplo:** N = 1.000.000, B = 100, M = 10.000.
+- k = 99 y hay 100 corridas, así que se necesitan **2** pasadas de mezcla (100 → 2 → 1).
+- E/S = 2 · 10.000 · 3 = **60.000**.
+- El contador dio **exactamente** 60.000.
+
+**Memoria:** el código lleva la cuenta de cuántos registros hay en memoria y **falla** si alguna vez supera M. Así se demuestra que se respeta el límite.
+
+Archivos: `comun/disco_simulado.py`, `c5_external_sort/external_sort.py`, `c5_external_sort/heap_min.py`, `tests/test_c5_external_sort.py`.
+
+---
+
+## 10. C6: MapReduce (alinear en paralelo)
+
+### La idea
+
+Cada lectura se alinea **sin depender de las demás**. Entonces se pueden repartir entre **p procesos** que trabajan al mismo tiempo, como repartir exámenes entre varios profesores para calificar.
+
+- **Map:** cada proceso alinea su paquete de lecturas.
+- **Reduce:** se juntan los resultados en orden y se calculan estadísticas.
+
+```
+                 ┌─ proceso 1: lecturas 0–999      ─┐
+lecturas ─ partir ┼─ proceso 2: lecturas 1000–1999  ─┼─ juntar (reduce) ─ resultados
+                 └─ proceso p: …                    ─┘
+```
+
+El índice se construye **una vez**, antes de repartir. En Linux los procesos hijos lo **heredan** sin copiarlo (`fork`).
+
+### Trabajo, profundidad y speedup
+
+| Concepto | Qué significa | En nuestro caso |
+|---|---|---|
+| **Trabajo W** | tiempo total si lo hiciera **un** solo procesador | índice + R lecturas × (costo de una) + reduce |
+| **Profundidad D** | tiempo con **infinitos** procesadores (la cadena que no se puede paralelizar) | índice + costo de **una** lectura + reduce |
+| **Speedup S(p)** | cuántas veces más rápido con p procesos: T₁ / T_p | lo medimos con p = 1, 2, 4, 8 y 16 |
+
+### Ley de Amdahl
+
+Si una fracción **f** del programa es **serial** (no se puede repartir):
+
+```
+S(p) = 1 / ( f + (1 − f)/p )     y nunca más que 1/f
+```
+
+**Ejemplo:** si construir el índice es el 40 % del tiempo (f = 0,4), aunque tengamos 1000 procesadores el programa nunca será más de 1/0,4 = **2,5 veces** más rápido.
+
+Por eso medimos **dos escenarios**:
+1. **Solo alineamiento**, con el índice ya construido: f pequeña, y el speedup se acerca a p.
+2. **Sistema completo**, incluyendo construir el índice: f grande, y el speedup se frena rápido.
+
+**Otro límite real:** la máquina de pruebas tiene **8 núcleos físicos** (16 "hilos"). Pasar de 8 a 16 procesos casi no ayuda, porque los hilos comparten el mismo núcleo.
+
+**Costo de comunicación:** las lecturas tienen que viajar a los procesos y los resultados volver. Eso suma tiempo que no existe en la versión secuencial.
+
+Archivos: `c6_mapreduce/mapreduce.py`, `tests/test_c6_mapreduce.py`.
+
+---
+
+## 11. Los experimentos: comprobar que la teoría se cumple
 
 ### Las reglas del enunciado (y cómo las cumplimos)
 
@@ -346,26 +490,38 @@ En una gráfica log-log ambos ejes van en escala logarítmica (1, 10, 100, 1000�
 | C2 arreglo dinámico | **1,01** | 1 | ✅ (además costo < 3n y alcancía nunca negativa) |
 | C3 con lectura fija (m = 50) | **1,02** | 1 | ✅ |
 | C3 con m = n | **2,08** | 2 | ✅ |
+| C4 quicksort | **1,14** | ≈ 1,10 | ✅ (comparaciones = 0,99–1,03 veces las esperadas) |
+| C5 ordenamiento externo | E/S contadas = predichas en **10 de 10** casos | igualdad | ✅ (exacto, con 1 a 6 pasadas) |
+| C6 trabajo vs. lecturas (p = 1) | **1,01** | 1 | ✅ |
+| C6 speedup con 8 procesos | **5,27** | 7,64 según Amdahl con f medida | ❌ explicado abajo |
 
 **Diferencias que hay que saber explicar:**
 - La teoría habla de **cómo crece** el tiempo, no de cuántos segundos tarda. Python es unas 100 veces más lento que C, pero eso solo cambia la constante c, **no la pendiente**.
 - Con n muy grande, el tiempo por elemento sube un poco (≈ 13 % en C1). La causa es la **memoria caché**: los datos ya no caben en la memoria rápida del procesador. No es un error del algoritmo.
 - En C2 el costo dio ≈ 2·n y no 3·n porque con n = 1000·2ⁱ el arreglo estaba justo antes de duplicar. Con n = 2ʲ + 1 (justo después de duplicar) da casi 3·n, que es exactamente el peor caso que predice el método contable.
+- **C6, el speedup fue menor de lo que predijo Amdahl.** Medimos directamente la parte serial (crear los procesos y el reduce): apenas f = 0,7 %. Con eso, Amdahl predecía 7,6× con 8 procesos, y medimos 5,3×.
+  - **Qué lo explica:** la **métrica de Karp-Flatt** calcula, a partir del speedup medido, cuánta parte serial "efectiva" hubo. Dio ≈ 7 %, casi igual con 2, 4 y 8 procesos. Es decir, hay un sobrecosto fijo de ≈ 0,6 s que se comporta como si fuera serial. Con ese f, Amdahl acierta.
+  - **De dónde sale el sobrecosto (explicación más probable):** cada proceso hijo hereda el índice, pero Python escribe un contador en cada objeto que lee. Eso obliga a cada hijo a **copiar** las páginas de memoria del índice (*copy-on-write*), y esa copia no se reparte entre los procesos.
+  - **Con 16 procesos empeora:** la máquina solo tiene 8 núcleos de verdad.
+- **C6, sistema completo:** construir el índice es serial y es ≈ 34 % del tiempo, así que Amdahl dice que **nunca** pasará de ≈ 3× más rápido. Medimos 2,2× con 8 procesos, consistente con ese límite.
 
 Las gráficas están en `experimentos/graficas/` y los números en `experimentos/resultados/`.
 
 ---
 
-## 9. Cómo correr todo
+## 12. Cómo correr todo
 
 Desde la carpeta del repositorio:
 
 ```bash
-pytest -q                                        # todas las pruebas (deben pasar 97)
+pytest -q                                        # todas las pruebas (deben pasar 134)
 python -m datos.generar 10000 100 42             # genera genoma y lecturas
 python -m experimentos.exp_c1_mergesort          # experimento C1 (~1 min)
 python -m experimentos.exp_c2_arreglo_dinamico   # experimento C2
 python -m experimentos.exp_c3_smith_waterman     # experimento C3
+python -m experimentos.exp_c4_quicksort          # experimento C4 (~2 min)
+python -m experimentos.exp_c5_external_sort      # experimento C5 (~5 min)
+python -m experimentos.exp_c6_mapreduce          # experimento C6 (~5 min, usa todos los núcleos)
 ```
 
 ### Mapa del repositorio
@@ -373,17 +529,17 @@ python -m experimentos.exp_c3_smith_waterman     # experimento C3
 | Carpeta | Qué hay |
 |---|---|
 | `datos/` | generador de genoma y lecturas |
-| `comun/` | k-mers en números, índice, alineador |
-| `c1_mergesort/`, `c2_arreglo_dinamico/`, `c3_smith_waterman/` | los componentes |
+| `comun/` | k-mers en números, índice, alineador, disco simulado |
+| `c1_mergesort/` … `c6_mapreduce/` | los seis componentes |
 | `tests/` | las pruebas |
 | `experimentos/` | mediciones, gráficas y resultados |
-| `docs/` | enunciado, análisis teórico, plan de experimentos y esta guía |
+| `docs/` | enunciado, análisis teórico, plan de experimentos, informe y esta guía; `docs/pdf/` con los PDF |
 
 **Regla del enunciado:** en el núcleo de los componentes **no se puede usar** `sorted`, `.sort()` ni `heapq`. Solo se usan en los tests, para comparar resultados.
 
 ---
 
-## 10. Preguntas probables de la sustentación (con respuesta corta)
+## 13. Preguntas probables de la sustentación (con respuesta corta)
 
 **C1, merge sort**
 1. *¿Cuál es la recurrencia y de dónde sale?* T(n) = 2T(n/2) + Θ(n): dos llamadas sobre mitades más una mezcla lineal.
@@ -404,6 +560,27 @@ python -m experimentos.exp_c3_smith_waterman     # experimento C3
 4. *¿Complejidad?* Θ(m·n) en tiempo y memoria, igual en todos los casos.
 5. *¿Por qué no alinear contra el genoma completo?* Costaría m·n con n gigante; las semillas reducen la región a ≈ 70 letras.
 
+**C4, quicksort aleatorizado**
+1. *¿Por qué el pivote al azar?* Para que ninguna entrada sea mala de forma sistemática. Con pivote fijo, una lista ya ordenada cuesta n²/2.
+2. *¿De dónde sale 2n ln n?* zᵢ y zⱼ se comparan con probabilidad 2/(j−i+1); se suma sobre todos los pares (linealidad de la esperanza).
+3. *¿El "caso esperado" supone datos al azar?* No. Es sobre los pivotes aleatorios: vale para **cualquier** entrada.
+4. *¿Para qué sirve la partición de 3 vías?* Con k-mers repetidos, los iguales quedan fijos de una vez. Si todos son iguales, cuesta Θ(n).
+5. *¿Por qué hace más comparaciones que merge sort y aun así se usa?* Ordena en su lugar (memoria O(log n)), y eso es justo lo que necesita C5.
+
+**C5, ordenamiento externo**
+1. *¿Qué se cuenta y por qué no el tiempo?* Las transferencias de bloque: en memoria externa, acceder al disco domina todo lo demás.
+2. *¿Por qué k = M/B − 1?* Caben M/B bloques en memoria: uno por corrida y uno para la salida.
+3. *¿De dónde sale la fórmula?* Cada pasada lee y escribe todo (2N/B). Hay 1 pasada para crear corridas y ⌈log_k(N/M)⌉ de mezcla.
+4. *¿Cómo garantizan que no usan más de M?* El código lleva la cuenta de los registros en memoria y falla si supera M. Los tests lo verifican.
+5. *¿Por qué a veces no coincide exacto?* Solo si N no es múltiplo de B: el último bloque está incompleto.
+
+**C6, MapReduce**
+1. *¿Qué es trabajo y qué es profundidad?* El tiempo con 1 procesador y el tiempo con infinitos procesadores.
+2. *¿Qué dice Amdahl?* Con fracción serial f, el speedup nunca supera 1/f, por más procesadores que haya.
+3. *¿Qué es lo serial en nuestro sistema?* Construir el índice, crear y cerrar los procesos, y el reduce.
+4. *¿Por qué no mejora de 8 a 16 procesos?* La máquina tiene 8 núcleos físicos; los otros 8 "hilos" comparten núcleo.
+5. *¿Por qué el resultado paralelo es igual al secuencial?* Cada lectura se alinea de forma independiente, y el reduce junta los bloques en el mismo orden. Hay un test que lo comprueba.
+
 **Experimentos**
 1. *¿Cómo se lee la pendiente log-log?* Si T ≈ c·nᵖ, la pendiente es p.
 2. *¿Por qué mediana y no promedio?* Porque es robusta a mediciones raras.
@@ -411,7 +588,7 @@ python -m experimentos.exp_c3_smith_waterman     # experimento C3
 
 ---
 
-## 11. Glosario
+## 14. Glosario
 
 | Término | Significado sencillo |
 |---|---|
@@ -427,3 +604,10 @@ python -m experimentos.exp_c3_smith_waterman     # experimento C3
 | Amortizado | costo repartido sobre una secuencia de operaciones |
 | Semilla fija (random) | número que hace que lo "aleatorio" salga siempre igual |
 | Log-log | gráfica con ambos ejes logarítmicos; las potencias se ven como rectas |
+| Pivote | elemento que se usa para partir el arreglo en quicksort |
+| Bloque | grupo de B registros que se lee o escribe de una vez en el disco |
+| Corrida | tramo ordenado de datos guardado en el disco |
+| E/S | entradas/salidas: lecturas y escrituras de bloques |
+| Min-heap | árbol que permite sacar siempre el elemento más pequeño en O(log k) |
+| Speedup | cuántas veces más rápido corre con p procesos que con 1 |
+| Fracción serial f | parte del programa que no se puede repartir entre procesos |

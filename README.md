@@ -7,6 +7,7 @@ Documentos (versiones PDF para entregar en [docs/pdf/](docs/pdf/)):
 - [docs/requerimientos.md](docs/requerimientos.md): requerimientos del enunciado y checklist.
 - [docs/analisis_teorico_c1_c3.md](docs/analisis_teorico_c1_c3.md): análisis teórico de C1–C3 (avance de la sesión 2).
 - [docs/plan_experimentos.md](docs/plan_experimentos.md): hipótesis, protocolo y resultados preliminares.
+- [docs/informe.md](docs/informe.md): informe técnico (borrador de la sesión 3).
 
 ## Estructura
 
@@ -16,12 +17,12 @@ Documentos (versiones PDF para entregar en [docs/pdf/](docs/pdf/)):
 | `c1_mergesort/` | C1: merge sort de k-mers con contador de comparaciones | hecho |
 | `c2_arreglo_dinamico/` | C2: arreglo dinámico (contadores de escrituras y copias) | hecho |
 | `c3_smith_waterman/` | C3: Smith-Waterman con reconstrucción del alineamiento | hecho |
-| `c4_quicksort/` | C4: quicksort aleatorizado | pendiente |
-| `comun/` | k-mers en 2 bits, índice de semillas (C1 + C2 + búsqueda binaria), alineador | hecho (falta `DiscoSimulado`) |
-| `c5_external_sort/` | C5: external merge sort | pendiente |
-| `c6_mapreduce/` | C6: MapReduce con `multiprocessing` | pendiente |
-| `experimentos/` | `bench.py` (harness) + un script por componente; `resultados/` (CSV) y `graficas/` (PNG) | C1, C2, C3 |
-| `tests/` | Pruebas pytest por componente | C1, C2, C3, comun |
+| `c4_quicksort/` | C4: quicksort aleatorizado con partición de 3 vías | hecho |
+| `comun/` | k-mers en 2 bits, índice de semillas (C1 + C2 + búsqueda binaria), alineador, `DiscoSimulado` | hecho |
+| `c5_external_sort/` | C5: external merge sort con min-heap propio | hecho |
+| `c6_mapreduce/` | C6: MapReduce con `multiprocessing` | hecho |
+| `experimentos/` | `bench.py` (harness) + un script por componente; `resultados/` (CSV) y `graficas/` (PNG) | C1–C6 |
+| `tests/` | Pruebas pytest por componente | C1–C6, comun |
 
 ## Ejecución
 
@@ -33,6 +34,9 @@ Requiere Python 3.10+ y pytest. Todos los comandos se corren desde la raíz del 
     python -m experimentos.exp_c1_mergesort         # ~1 min
     python -m experimentos.exp_c2_arreglo_dinamico  # ~15 s
     python -m experimentos.exp_c3_smith_waterman    # ~30 s
+    python -m experimentos.exp_c4_quicksort         # ~2 min
+    python -m experimentos.exp_c5_external_sort     # ~5 min
+    python -m experimentos.exp_c6_mapreduce         # ~5 min (usa todos los núcleos)
 
 Requiere además `numpy` y `matplotlib` para los experimentos.
 

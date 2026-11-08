@@ -18,11 +18,11 @@ Para todos: cotas O/Ω/Θ en mejor, peor y caso esperado, y qué datos provocan 
 
 ## 2. Reglas técnicas
 
-- [ ] Python 3.10+; NumPy permitido; C++ opcional solo para rendimiento.
-- [ ] Núcleo de cada componente implementado por el equipo: prohibido `sorted`, `list.sort`, `heapq`, `networkx`, `scikit-learn` (permitidos solo para generar datos o como oráculo en tests).
-- [ ] `DiscoSimulado`: bloques de tamaño fijo en archivo binario; cuenta cada `leer_bloque(i)` y `escribir_bloque(i, datos)`; **prohibido leer el archivo por fuera de la clase**; memoria interna ≤ M registros (M/B bloques de búfer).
+- [x] Python 3.10+; NumPy permitido; C++ opcional solo para rendimiento.
+- [x] Núcleo de cada componente implementado por el equipo: prohibido `sorted`, `list.sort`, `heapq`, `networkx`, `scikit-learn` (permitidos solo para generar datos o como oráculo en tests).
+- [x] `DiscoSimulado`: bloques de tamaño fijo en archivo binario; cuenta cada `leer_bloque(i)` y `escribir_bloque(i, datos)`; **prohibido leer el archivo por fuera de la clase**; memoria interna ≤ M registros (M/B bloques de búfer).
 - [x] Datos con script propio y semilla fija (`datos/generar.py`).
-- [ ] Tamaños: C1–C4 con n ∈ [10³, 10⁶]; C5 con N ∈ [10⁵, 10⁶] y M ≤ N/20; ≥ 5 tamaños en progresión geométrica (duplicar n).
+- [x] Tamaños: C1–C4 con n ∈ [10³, 10⁶]; C5 con N ∈ [10⁵, 10⁶] y M ≤ N/20; ≥ 5 tamaños en progresión geométrica (duplicar n).
 - [x] Protocolo de medición (harness `experimentos/bench.py`, aplicado a C1–C3):
   - `time.perf_counter()`, ≥ 5 repeticiones por punto, mediana + dispersión.
   - Generación de datos fuera del tiempo medido.
@@ -30,7 +30,7 @@ Para todos: cotas O/Ω/Θ en mejor, peor y caso esperado, y qué datos provocan 
   - Para n log n: graficar T(n)/(n log n) y ver que tiende a constante.
   - C5: E/S contadas vs predichas, no solo tiempo.
   - El enunciado (U.C. 3.3) menciona también **memoria**: conviene medirla (p. ej. `tracemalloc`) al menos en C1/C4/C5.
-- [ ] Repositorio: README con instrucciones, carpeta por componente, `datos/` con generador, `experimentos/` con benchmarks, pytest por componente.
+- [x] Repositorio: README con instrucciones, carpeta por componente, `datos/` con generador, `experimentos/` con benchmarks, pytest por componente.
 - [x] Declarar uso de asistentes de IA en el README.
 
 ## 3. Entregables y cronograma
