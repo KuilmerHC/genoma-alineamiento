@@ -48,8 +48,8 @@ function pendiente(xs, ys) {
 // ---------- tema ----------
 const THEME = {
   name: "Genoma Grupo 3",
-  headFontFace: "Cambria",
-  bodyFontFace: "Calibri",
+  headFontFace: "Georgia",
+  bodyFontFace: "Arial",
   colors: {
     dk1: "1B2A30", lt1: "FFFFFF", dk2: "0B3C49", lt2: "EAF3F2",
     accent1: "0B7A75", accent2: "E4572E", accent3: "F2A541", accent4: "3A6EA5",
@@ -72,7 +72,7 @@ pres.defineSlideMaster({
   background: { color: C.text2 },
   objects: [
     { placeholder: { options: { name: "title", type: "title", x: 0.6, y: 1.55, w: 8.8, h: 1.1,
-      fontSize: 40, bold: true, color: C.background1, valign: "bottom", margin: 0 }, text: "" } },
+      fontSize: 40, bold: true, color: C.background1, valign: "bottom", align: "left", margin: 0 }, text: "" } },
     { placeholder: { options: { name: "body", type: "body", x: 0.6, y: 2.75, w: 8.8, h: 0.6,
       fontSize: 18, color: C.background2, valign: "top", margin: 0 }, text: "" } },
   ],
@@ -83,7 +83,7 @@ pres.defineSlideMaster({
   margin: [0.5, 0.5, 0.5, 0.5],
   objects: [
     { placeholder: { options: { name: "title", type: "title", x: 1.05, y: 0.3, w: 8.45, h: 0.62,
-      fontSize: 28, bold: true, color: C.text2, valign: "middle", margin: 0 }, text: "" } },
+      fontSize: 28, bold: true, color: C.text2, valign: "middle", align: "left", margin: 0 }, text: "" } },
     { text: { text: "Grupo 3 · Alineamiento de lecturas genómicas · SIST0175",
       options: { x: 0.5, y: 5.22, w: 6, h: 0.25, fontSize: 9, color: "5B6B70", margin: 0, isTextBox: true } } },
   ],
@@ -94,7 +94,7 @@ pres.defineSlideMaster({
   background: { color: C.text2 },
   objects: [
     { placeholder: { options: { name: "title", type: "title", x: 0.6, y: 0.35, w: 8.8, h: 0.65,
-      fontSize: 30, bold: true, color: C.background1, valign: "middle", margin: 0 }, text: "" } },
+      fontSize: 30, bold: true, color: C.background1, valign: "middle", align: "left", margin: 0 }, text: "" } },
   ],
   slideNumber: { x: 9.1, y: 5.22, w: 0.4, h: 0.25, fontSize: 9, color: "CFE3E1", align: "right" },
 });
@@ -235,7 +235,7 @@ function opcionesGrafica(extra) {
   const razones = c4.map((f) => f.comp_qs_sobre_esperadas);
   const minR = Math.min(...razones), maxR = Math.max(...razones);
   const ultimo = mem[mem.length - 1];
-  dato(s, 0.5, 2.8, 2.0, num(minR) + "–" + num(maxR), "comparaciones medidas / esperadas");
+  dato(s, 0.5, 2.8, 2.0, "≈ 1,00", "medidas / esperadas (" + num(minR) + "–" + num(maxR) + ")");
   dato(s, 2.6, 2.8, 2.0, num(ultimo.bytes_por_elem_ms, 0) + " B", "extra por elemento de merge sort; quicksort ≈ 0");
   s.addText("Pivote aleatorio: ninguna entrada es mala de forma sistemática (también la ya ordenada). Partición de 3 vías: los k-mers repetidos se fijan de una vez.",
     { x: 0.5, y: 3.95, w: 4.1, h: 0.95, fontSize: 12.5, color: C.text1, margin: 0, isTextBox: true, valign: "top" });
@@ -262,7 +262,7 @@ function opcionesGrafica(extra) {
     "Se cobran 3 créditos por append: 1 paga la escritura y 2 se guardan. Al duplicar de c a 2c, los c/2 elementos nuevos guardaron c créditos: justo lo que cuesta copiar c. El saldo nunca es negativo ⇒ costo ≤ 3n ⇒ O(1) amortizado.",
     { tam: 12.5 });
   const peorRazon = Math.max(...c2.map((f) => f.costo_sobre_n_peor));
-  dato(s, 0.5, 3.05, 2.0, "< 3", "costo / n en todo n (máx. " + num(peorRazon, 3) + " en n = 2ʲ + 1)");
+  dato(s, 0.5, 3.05, 2.0, "< 3", "costo / n en todo n; casi 3 justo después de duplicar");
   dato(s, 2.6, 3.05, 2.0, "0", "saldo mínimo del banco de créditos");
   const pc2 = pendiente(c2.map((f) => f.n), c2.map((f) => f.mediana));
   dato(s, 0.5, 4.1, 2.0, num(pc2), "pendiente log-log del tiempo (teoría: 1)");
@@ -297,8 +297,9 @@ function opcionesGrafica(extra) {
     { text: "E/S = 2 · (N/B) · (1 + ⌈log", options: {} },
     { text: "M/B − 1", options: { subscript: true } },
     { text: "(N/M)⌉)", options: {} },
-    { text: "    corridas de M ordenadas con C4 · mezcla de k = M/B − 1 vías con min-heap propio", options: { fontSize: 12, color: C.text1, bold: false } },
-  ], { x: 0.65, y: 1.1, w: 8.7, h: 0.6, fontSize: 18, bold: true, color: C.text2, margin: 0, isTextBox: true, valign: "middle" });
+  ], { x: 0.65, y: 1.1, w: 4.6, h: 0.6, fontSize: 18, bold: true, color: C.text2, margin: 0, isTextBox: true, valign: "middle" });
+  s.addText("Corridas de M registros ordenadas con C4; mezcla de k = M/B − 1 corridas a la vez con un min-heap propio.",
+    { x: 5.35, y: 1.1, w: 4.0, h: 0.6, fontSize: 12, color: C.text1, margin: 0, isTextBox: true, valign: "middle" });
   const filas = [[
     { text: "M (memoria)", options: { bold: true } }, { text: "k", options: { bold: true } },
     { text: "corridas", options: { bold: true } }, { text: "pasadas", options: { bold: true } },
@@ -307,8 +308,8 @@ function opcionesGrafica(extra) {
   c5b.forEach((f) => filas.push([miles(f.M), String(f.k), miles(f.corridas), String(f.pasadas),
     miles(f.es_contadas), miles(f.es_predichas)]));
   s.addTable(filas, { x: 0.5, y: 1.9, w: 5.9, colW: [1.15, 0.6, 0.95, 0.85, 1.2, 1.15], fontSize: 12,
-    color: HEX.tinta, fontFace: "Calibri", border: { type: "solid", pt: 0.75, color: HEX.grilla },
-    fill: { color: "FFFFFF" }, rowH: 0.36, align: "right", valign: "middle", margin: [0, 6, 0, 6] });
+    color: HEX.tinta, fontFace: "Arial", border: { type: "solid", pt: 0.75, color: HEX.grilla },
+    fill: { color: "FFFFFF" }, rowH: 0.36, align: "right", valign: "middle", margin: [0.03, 0.08, 0.03, 0.08] });
   s.addText("N = 10⁶ registros de 12 bytes (kmer uint64 + posición uint32), B = 100. Todo acceso pasa por DiscoSimulado.leer_bloque / escribir_bloque.",
     { x: 0.5, y: 4.2, w: 5.9, h: 0.6, fontSize: 11, color: "5B6B70", margin: 0, isTextBox: true, valign: "top" });
   const total = c5a.length + c5b.length;
@@ -328,12 +329,12 @@ function opcionesGrafica(extra) {
   insignia(s, "C3");
   tarjeta(s, 0.5, 1.15, 4.1, 1.55, "Recurrencia (+2 / −1 / hueco −2)",
     "H[i][j] = max(0,\n   H[i−1][j−1] + s(aᵢ, bⱼ),\n   H[i−1][j] − 2,  H[i][j−1] − 2)", { tam: 12, mono: true });
-  tarjeta(s, 0.5, 2.85, 4.1, 1.15, "Por qué programación dinámica",
-    "Subestructura óptima (cortar y pegar la última columna) y subproblemas superpuestos: 3^min(m,n) llamadas ingenuas, (m+1)(n+1) celdas distintas.",
+  tarjeta(s, 0.5, 2.8, 4.1, 1.25, "Por qué programación dinámica",
+    "Subestructura óptima (cortar y pegar) y subproblemas superpuestos: recursión ingenua ≥ 3^min(m,n) llamadas; tabla de (m+1)(n+1) celdas.",
     { tam: 12 });
   const pc = pendiente(c3cuad.map((f) => f.n), c3cuad.map((f) => f.mediana));
-  dato(s, 0.5, 4.1, 2.0, num(pc), "pendiente con m = n (teoría: 2)");
-  dato(s, 2.6, 4.1, 2.0, "= m·n", "celdas calculadas en toda entrada");
+  dato(s, 0.5, 4.15, 2.0, num(pc), "pendiente con m = n (teoría: 2)");
+  dato(s, 2.6, 4.15, 2.0, "= m·n", "celdas calculadas en toda entrada");
   const etq = c3cuad.map((f) => String(f.n));
   const cte = c3cuad[c3cuad.length - 1].mediana / c3cuad[c3cuad.length - 1].mn;
   s.addChart(pres.charts.LINE, [
@@ -396,8 +397,8 @@ function opcionesGrafica(extra) {
     ["C6", "Amdahl con f medida", "5,3× vs 7,6× con p = 8; con f de Karp-Flatt ±3 %", { text: "parcial", options: { color: HEX.coral, bold: true } }],
   ];
   s.addTable(filas, { x: 0.5, y: 1.15, w: 9, colW: [0.75, 3.55, 3.55, 1.15], fontSize: 12.5, color: HEX.tinta,
-    fontFace: "Calibri", border: { type: "solid", pt: 0.75, color: HEX.grilla }, fill: { color: "FFFFFF" },
-    rowH: 0.47, valign: "middle", margin: [0, 6, 0, 6] });
+    fontFace: "Arial", border: { type: "solid", pt: 0.75, color: HEX.grilla }, fill: { color: "FFFFFF" },
+    rowH: 0.47, valign: "middle", margin: [0.03, 0.08, 0.03, 0.08] });
   s.addText("Protocolo: perf_counter, 5 repeticiones, mediana y Q1–Q3, datos fuera del tiempo medido, ≥ 5 tamaños en progresión geométrica, pendiente por mínimos cuadrados en log-log.",
     { x: 0.5, y: 4.55, w: 9, h: 0.5, fontSize: 11, color: "5B6B70", margin: 0, isTextBox: true, valign: "top" });
   s.addNotes("JUAN JOSÉ (≈45 s). Resumen de la validación. Seguimos el protocolo: perf_counter, cinco repeticiones, mediana con su dispersión, datos generados fuera del tiempo y pendiente en log-log. Lo importante: todo lo que es un conteo, comparaciones, créditos, celdas, transferencias de bloque, coincide exactamente o dentro de la variación aleatoria, y las pendientes coinciden con la teoría. La única hipótesis que no se cumplió tal cual fue la de Amdahl en C6, y Santiago va a explicar por qué en la discusión.");
@@ -412,10 +413,10 @@ function opcionesGrafica(extra) {
   insignia(s, "≠");
   tarjeta(s, 0.5, 1.15, 4.35, 3.75, "Coincide",
     "• Conteos exactos: comparaciones (C1, C4), créditos (C2), celdas (C3), E/S (C5)\n\n• Pendientes log-log con error ≤ 0,08 en todas las hipótesis de complejidad\n\n• La teoría predice cómo crece el costo, no los segundos",
-    { tam: 13 });
+    { tam: 15.5 });
   tarjeta(s, 5.15, 1.15, 4.35, 3.75, "No coincide (y la causa)",
     "• Intérprete: ≈ 140 ns por comparación, unas 100 veces C; cambia c, no la pendiente\n\n• Caché: T/(n log n) sube 13 % con n ≥ 10⁵; SW con m = n da 2,08\n\n• C6: copy-on-write del índice heredado por fork y SMT (8 núcleos reales)",
-    { tam: 13, colorTitulo: C.accent2 });
+    { tam: 15.5, colorTitulo: C.accent2 });
   s.addNotes("SANTIAGO (≈45 s). Donde coincide: en todo lo que es un conteo de operaciones, y en las pendientes. Donde no: los segundos. Python cuesta unas cien veces más por operación que C, pero eso solo cambia la constante. Con n grande los datos dejan de caber en caché y el tiempo por elemento sube un poco, por eso Smith-Waterman con m = n da 2,08 y no 2. Y en C6 aparece un sobrecosto que se comporta como serial: los procesos hijos copian el índice que heredan, y los 16 hilos son en realidad 8 núcleos.");
 }
 

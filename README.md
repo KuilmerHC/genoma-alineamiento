@@ -11,7 +11,7 @@ Documentos (versiones PDF para entregar en [docs/pdf/](docs/pdf/)):
 - [docs/analisis_teorico_c1_c3.md](docs/analisis_teorico_c1_c3.md): análisis teórico de C1–C3 (avance de la sesión 2).
 - [docs/plan_experimentos.md](docs/plan_experimentos.md): hipótesis, protocolo y resultados preliminares.
 - [docs/informe.md](docs/informe.md): **informe técnico final** (PDF de 15 páginas en `docs/pdf/informe.pdf`).
-- [docs/diapositivas/sustentacion_grupo3.pptx](docs/diapositivas/sustentacion_grupo3.pptx): **diapositivas de la sustentación** (11 láminas, con el guion en las notas del orador).
+- [docs/diapositivas/sustentacion_grupo3.pptx](docs/diapositivas/sustentacion_grupo3.pptx): **diapositivas de la sustentación** (11 láminas, con el guion en las notas del orador; PDF en `docs/pdf/sustentacion_grupo3.pdf`).
 
 ## Estructura
 
