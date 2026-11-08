@@ -1,6 +1,6 @@
 # Alineamiento de lecturas genómicas con k-mers como semillas
 
-**Informe técnico (borrador): Proyecto Final Integrador, Análisis de Algoritmos (SIST0175), Grupo 3**
+**Informe técnico: Proyecto Final Integrador, Análisis de Algoritmos (SIST0175), Grupo 3**
 
 Kuilmer Santiago Hernández Cruz · Juan José Berrio Español · Santiago Serrano Cuellar
 
@@ -91,7 +91,7 @@ H[i][0] = H[0][j] = 0;  respuesta: el máximo de H en toda la tabla
 - **Subestructura óptima:** se demuestra cortando la última columna del alineamiento (argumento de cortar y pegar).
 - **Subproblemas superpuestos:** la recursión ingenua hace ≥ 3^min(m,n) llamadas, pero solo hay (m+1)(n+1) subproblemas distintos.
 - **Tabla:** se llena por filas; el retroceso hasta el primer 0 reconstruye el alineamiento.
-- **Complejidad:** tiempo Θ(mn) en todos los casos (la tabla siempre se llena completa). Memoria Θ(mn); bastarían dos filas si solo se quisiera el puntaje. Retroceso O(m + n).
+- **Complejidad:** tiempo Θ(mn) en todos los casos (la tabla siempre se llena completa). Memoria Θ(mn); si solo se quiere el puntaje bastan dos filas, Θ(n) (`puntaje_dos_filas`), pero sin la tabla no hay retroceso. Retroceso O(m + n).
 - **En el sistema:** alinear contra la región candidata cuesta Θ(m(m+20)) en vez de Θ(mn).
 
 ### C4. Quicksort aleatorizado con partición de 3 vías
@@ -155,6 +155,9 @@ W = Θ(n log n) + R·c_L + Θ(R)        D = Θ(n log n) + c_L + Θ(R)
 |---|---|---|---|
 | H1 C1: T = Θ(n log n) | pendiente 1,12; T/(n log₂ n) = 143–171 ns | 1,10; constante | ✓ |
 | H1 C1: log₂ n! ≤ C ≤ n log₂ n | C/(n log₂ n) = 0,866 → 0,929 | → 1 − 1,25/log₂ n (0,934) | ✓ |
+| H1 C1: mejor y peor caso, n = 2¹⁰…2²⁰ | igual a (n/2) log₂ n y n log₂ n − n + 1 en los 11 tamaños; tiempo: pendientes 1,07 / 1,10 / 1,10 (mejor / peor / aleatoria) | igualdad; ≈ 1,1 | ✓ |
+| Memoria C1 vs. C4 (tracemalloc) | merge sort 17 B extra por elemento (pendiente 1,01); quicksort ≈ 2,6 KB fijos | Θ(n); O(log n) | ✓ |
+| Memoria C3: tabla vs. dos filas | 8,2 B por celda (13 MB con n = 32 000); dos filas 16 B por columna | Θ(mn); Θ(n) | ✓ |
 | H2 C2: costo < 3n, saldo ≥ 0 | costo/n = 2,02 (n = 1000·2ⁱ); 2,997–3,000 (n = 2ʲ + 1); saldo mín. 0 | < 3; ≥ 0 | ✓ |
 | H2 C2: T = Θ(n) | pendiente 1,01 | 1 | ✓ |
 | H3 C3: T = Θ(mn) | pendiente 1,02 (m = 50); 2,08 (m = n) | 1; 2 | ✓ |
@@ -276,4 +279,4 @@ W = Θ(n log n) + R·c_L + Θ(R)        D = Θ(n log n) + c_L + Θ(R)
 ## Anexos
 
 - **A.** Análisis teórico detallado de C1–C3 (`docs/analisis_teorico_c1_c3.md`).
-- **B.** Plan de experimentos y resultados por punto (`docs/plan_experimentos.md`, `experimentos/resultados/*.csv`).
+- **B.** Plan de experimentos y resultados por punto (`docs/plan_experimentos.md`, `experimentos/resultados/*.csv`; casos extremos y memoria en `experimentos/exp_casos_y_memoria.py`).

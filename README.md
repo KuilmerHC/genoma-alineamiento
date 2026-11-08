@@ -10,7 +10,8 @@ Documentos (versiones PDF para entregar en [docs/pdf/](docs/pdf/)):
 - [docs/requerimientos.md](docs/requerimientos.md): requerimientos del enunciado y checklist.
 - [docs/analisis_teorico_c1_c3.md](docs/analisis_teorico_c1_c3.md): análisis teórico de C1–C3 (avance de la sesión 2).
 - [docs/plan_experimentos.md](docs/plan_experimentos.md): hipótesis, protocolo y resultados preliminares.
-- [docs/informe.md](docs/informe.md): informe técnico (borrador de la sesión 3).
+- [docs/informe.md](docs/informe.md): **informe técnico final** (PDF de 15 páginas en `docs/pdf/informe.pdf`).
+- [docs/diapositivas/sustentacion_grupo3.pptx](docs/diapositivas/sustentacion_grupo3.pptx): **diapositivas de la sustentación** (11 láminas, con el guion en las notas del orador).
 
 ## Estructura
 
@@ -29,7 +30,9 @@ Documentos (versiones PDF para entregar en [docs/pdf/](docs/pdf/)):
 
 ## Ejecución
 
-Requiere Python 3.10+ y pytest. Todos los comandos se corren desde la raíz del repo.
+Requiere Python 3.10+. Todos los comandos se corren desde la raíz del repo.
+
+    pip install -r requirements.txt
 
     python -m datos.generar 10000 100 42   # genera datos/genoma.txt y datos/lecturas.txt
     python -m datos.generar 10000 100 42 0.01   # igual, con 1 % de inserciones/borrados
@@ -40,8 +43,10 @@ Requiere Python 3.10+ y pytest. Todos los comandos se corren desde la raíz del 
     python -m experimentos.exp_c4_quicksort         # ~2 min
     python -m experimentos.exp_c5_external_sort     # ~5 min
     python -m experimentos.exp_c6_mapreduce         # ~5 min (usa todos los núcleos)
+    python -m experimentos.exp_casos_y_memoria      # ~3 min: mejor/peor caso de C1 y memoria
+    python -m experimentos.correr_todo              # todos los anteriores, en orden (~20 min)
 
-Requiere además `numpy` y `matplotlib` para los experimentos.
+Las diapositivas se regeneran desde los CSV con `docs/diapositivas/generar_diapositivas.js` (requiere Node y `pptxgenjs`).
 
 Los archivos `datos/*.txt` no se versionan: se regeneran con el comando anterior (la semilla fija garantiza los mismos datos).
 

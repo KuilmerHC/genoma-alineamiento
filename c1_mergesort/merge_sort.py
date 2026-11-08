@@ -49,6 +49,22 @@ def merge_sort(a):
     return mezclar(merge_sort(a[:mid]), merge_sort(a[mid:]))
 
 
+def entrada_peor_caso(ordenados):
+    """Permutación de `ordenados` que obliga a merge sort a hacer n log₂ n − n + 1
+    comparaciones (n potencia de 2): el peor caso.
+
+    Idea: en cada mezcla, las dos mitades tienen que intercalarse hasta el final. Se logra
+    "deshaciendo" una mezcla: los elementos en posiciones pares (en orden) van a la mitad
+    izquierda y los de posiciones impares a la derecha, y se repite recursivamente en cada
+    mitad. Ejemplo: [0..7] → [0, 4, 2, 6, 1, 5, 3, 7]. Tiempo Θ(n log n).
+    """
+    if len(ordenados) <= 1:
+        return list(ordenados)
+    pares = [ordenados[i] for i in range(0, len(ordenados), 2)]
+    impares = [ordenados[i] for i in range(1, len(ordenados), 2)]
+    return entrada_peor_caso(pares) + entrada_peor_caso(impares)
+
+
 def reiniciar_contador():
     """Pone en cero el contador global de comparaciones."""
     global comparaciones

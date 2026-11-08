@@ -106,3 +106,12 @@ def test_ubica_lecturas_con_errores_en_su_posicion_real():
         r = smith_waterman(lectura, region)
         assert abs((ini + r.inicio_b) - (pos + r.inicio_a)) <= 3
         assert r.puntaje >= 50  # muy por encima de lo que da una región al azar
+
+
+@pytest.mark.parametrize("semilla", range(20))
+def test_dos_filas_da_el_mismo_puntaje(semilla):
+    from c3_smith_waterman.smith_waterman import puntaje_dos_filas
+    rng = random.Random(500 + semilla)
+    a = "".join(rng.choice("ACGT") for _ in range(rng.randint(0, 40)))
+    b = "".join(rng.choice("ACGT") for _ in range(rng.randint(0, 60)))
+    assert puntaje_dos_filas(a, b) == smith_waterman(a, b).puntaje

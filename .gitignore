@@ -5,3 +5,5 @@ __pycache__/
 datos/*.txt
 datos/*.bin
 experimentos/resultados/*.tmp
+# Archivos de bloqueo de LibreOffice / OnlyOffice
+.~lock.*#

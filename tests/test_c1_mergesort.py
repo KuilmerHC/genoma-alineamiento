@@ -49,3 +49,18 @@ def test_mejor_caso_queda_bajo_log2_factorial():
     ms.merge_sort(list(range(n)))
     assert ms.comparaciones == (n // 2) * int(math.log2(n))
     assert ms.comparaciones < math.log2(math.factorial(n))
+
+
+def test_peor_caso_exacto():
+    # Con la entrada construida, cada mezcla de tamaño s hace s − 1 comparaciones.
+    for n in (2, 8, 64, 1024):
+        entrada = ms.entrada_peor_caso(list(range(n)))
+        assert sorted(entrada) == list(range(n))  # es una permutación
+        ms.reiniciar_contador()
+        assert ms.merge_sort(entrada) == list(range(n))
+        k = int(math.log2(n))
+        assert ms.comparaciones == n * k - n + 1
+
+
+def test_peor_caso_ejemplo():
+    assert ms.entrada_peor_caso(list(range(8))) == [0, 4, 2, 6, 1, 5, 3, 7]

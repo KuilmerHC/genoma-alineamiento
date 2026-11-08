@@ -504,6 +504,9 @@ En una gráfica log-log ambos ejes van en escala logarítmica (1, 10, 100, 1000�
 | C5 ordenamiento externo | E/S contadas = predichas en **10 de 10** casos | igualdad | ✅ (exacto, con 1 a 6 pasadas) |
 | C6 trabajo vs. lecturas (p = 1) | **1,01** | 1 | ✅ |
 | C6 speedup con 8 procesos | **5,27** | 7,64 según Amdahl con f medida | ❌ explicado abajo |
+| C1 mejor y peor caso (hasta n = 2²⁰ ≈ un millón) | comparaciones **exactamente** iguales a (n/2)·log₂ n y n·log₂ n − n + 1 | igualdad | ✅ |
+| Memoria C1 vs C4 | merge sort: 17 bytes extra por elemento; quicksort: ≈ 2,6 KB fijos | Θ(n) vs O(log n) | ✅ |
+| Memoria C3 | tabla completa 13 MB vs dos filas 0,5 MB (m = 50, n = 32 000) | Θ(mn) vs Θ(n) | ✅ |
 
 **Diferencias que hay que saber explicar:**
 - La teoría habla de **cómo crece** el tiempo, no de cuántos segundos tarda. Python es unas 100 veces más lento que C, pero eso solo cambia la constante c, **no la pendiente**.
@@ -524,7 +527,7 @@ Las gráficas están en `experimentos/graficas/` y los números en `experimentos
 Desde la carpeta del repositorio:
 
 ```bash
-pytest -q                                        # todas las pruebas (deben pasar 134)
+pytest -q                                        # todas las pruebas (deben pasar 156)
 python -m datos.generar 10000 100 42             # genera genoma y lecturas
 python -m experimentos.exp_c1_mergesort          # experimento C1 (~1 min)
 python -m experimentos.exp_c2_arreglo_dinamico   # experimento C2
@@ -532,6 +535,8 @@ python -m experimentos.exp_c3_smith_waterman     # experimento C3
 python -m experimentos.exp_c4_quicksort          # experimento C4 (~2 min)
 python -m experimentos.exp_c5_external_sort      # experimento C5 (~5 min)
 python -m experimentos.exp_c6_mapreduce          # experimento C6 (~5 min, usa todos los núcleos)
+python -m experimentos.exp_casos_y_memoria       # mejor/peor caso de C1 y memoria (~3 min)
+python -m experimentos.correr_todo               # todos los experimentos en orden (~20 min)
 ```
 
 ### Mapa del repositorio
@@ -549,7 +554,34 @@ python -m experimentos.exp_c6_mapreduce          # experimento C6 (~5 min, usa t
 
 ---
 
-## 13. Preguntas probables de la sustentación (con respuesta corta)
+## 13. Guion de la sustentación (10–12 minutos)
+
+Las diapositivas están en `docs/diapositivas/sustentacion_grupo3.pptx`. **Cada lámina tiene en las notas del orador el texto completo de lo que hay que decir.** Aquí va el resumen para ensayar:
+
+| # | Lámina | Quién | Tiempo | La idea que tiene que quedar |
+|---|---|---|---|---|
+| 1 | Portada | Kuilmer | 0:30 | Quiénes somos y qué hace cada uno |
+| 2 | Buscar 50 letras en un millón | Kuilmer | 1:00 | Índice de k-mers → región pequeña → alineamiento fino |
+| 3 | C1 merge sort | Kuilmer | 1:15 | 2T(n/2)+Θ(n), Maestro caso 2; cota log₂ n!; mejor y peor caso exactos |
+| 4 | C4 quicksort | Kuilmer | 1:15 | prob. 2/(j−i+1) ⇒ 2n ln n; vale para toda entrada; ordena en su lugar |
+| 5 | C2 arreglo dinámico | Juan José | 1:00 | 3 créditos: 1 escribe, 2 ahorran; saldo nunca negativo ⇒ O(1) amortizado |
+| 6 | C5 ordenamiento externo | Juan José | 1:15 | 2(N/B)(1 + ⌈log_k(N/M)⌉); 10 de 10 exactas |
+| 7 | C3 Smith-Waterman | Santiago | 1:00 | H[i][j] con 3 vecinas + 0; subestructura y superposición; Θ(mn) |
+| 8 | C6 MapReduce | Santiago | 1:30 | Amdahl; 5,3× vs 7,6×; Karp-Flatt ≈ 0,07; techo 1/f |
+| 9 | Validación | Juan José | 0:45 | Los conteos coinciden exacto; las pendientes también |
+| 10 | Discusión | Santiago | 0:45 | Los segundos dependen de intérprete, caché y hardware |
+| 11 | Conclusiones | Kuilmer | 0:30 | Todo funciona, todo está probado y medido; ¿preguntas? |
+
+**Total ≈ 11 min.** El texto de las notas, leído en voz alta, dura ≈ 8,5 min; con pausas, señalando las gráficas y con los cambios de expositor queda en 10–11 min. Si el ensayo se pasa de 12 minutos, recorten primero en las láminas 2, 9 y 10.
+
+**Consejos:**
+- Ensayen al menos dos veces con cronómetro y con el cambio de expositor.
+- No lean la lámina: digan la idea de la última columna y señalen la gráfica.
+- En las preguntas individuales pueden preguntar por **cualquier** componente: repasen la sección 14.
+
+---
+
+## 14. Preguntas probables de la sustentación (con respuesta corta)
 
 **C1, merge sort**
 1. *¿Cuál es la recurrencia y de dónde sale?* T(n) = 2T(n/2) + Θ(n): dos llamadas sobre mitades más una mezcla lineal.
@@ -598,7 +630,7 @@ python -m experimentos.exp_c6_mapreduce          # experimento C6 (~5 min, usa t
 
 ---
 
-## 14. Glosario
+## 15. Glosario
 
 | Término | Significado sencillo |
 |---|---|

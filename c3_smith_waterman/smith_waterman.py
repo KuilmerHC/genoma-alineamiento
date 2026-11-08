@@ -97,6 +97,29 @@ def smith_waterman(a, b, coincidencia=COINCIDENCIA, diferencia=DIFERENCIA, hueco
     )
 
 
+def puntaje_dos_filas(a, b, coincidencia=COINCIDENCIA, diferencia=DIFERENCIA, hueco=HUECO):
+    """Solo el puntaje máximo, guardando dos filas de la tabla en vez de toda la tabla.
+
+    H[i][j] depende únicamente de la fila i−1 y de la fila i, así que basta con la fila
+    anterior y la actual. Tiempo Θ(mn), igual que antes; memoria Θ(n) en vez de Θ(mn).
+    Precio: sin la tabla completa no se puede hacer el retroceso (no hay alineamiento).
+    """
+    n = len(b)
+    anterior = [0] * (n + 1)
+    mejor = 0
+    for i in range(1, len(a) + 1):
+        actual = [0] * (n + 1)
+        ai = a[i - 1]
+        for j in range(1, n + 1):
+            s = coincidencia if ai == b[j - 1] else diferencia
+            h = max(0, anterior[j - 1] + s, anterior[j] + hueco, actual[j - 1] + hueco)
+            actual[j] = h
+            if h > mejor:
+                mejor = h
+        anterior = actual
+    return mejor
+
+
 def puntaje_de_alineamiento(alin_a, alin_b, coincidencia=COINCIDENCIA,
                             diferencia=DIFERENCIA, hueco=HUECO):
     """Puntaje de un alineamiento ya armado (columna por columna). Se usa para verificar."""
